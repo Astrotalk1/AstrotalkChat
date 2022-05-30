@@ -95,6 +95,7 @@ public class AstroConstants {
 
     // Other
     public static final String CANCEL_WAITLIST = DOMAIN + "call-chat/queue/cancel/token";
+    public static final String CHAT_STATUS_FOR_USER = DOMAIN_USER_CHAT + "chat/order/get/status/for/user";
 
     // New Apis
     public static final String VERIFY_TOKEN = DOMAIN + "winzo/verify/thirdparty/user/token";

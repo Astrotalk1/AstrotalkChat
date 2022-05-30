@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@drawable/chat_theme_img"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="150dp"
+            android:contentDescription="@string/at_image"
+            android:src="@drawable/app_logo"
+            android:layout_gravity="center"
+            android:layout_height="150dp" />
+
+        <TextView
+            android:id="@+id/app_name"
+            android:layout_width="match_parent"
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
+            android:textSize="20sp"
+            android:textColor="@color/at_black"
+            android:text="@string/at_app_name"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
+            android:textSize="20sp"
+            android:textColor="@color/at_black"
+            android:text="@string/at_tag_line"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="4dp"
+        android:indeterminateTint="@color/at_black"
+        android:visibility="visible" />
+
+</RelativeLayout>

@@ -175,5 +175,7 @@
     <string name="at_order_history">Order History</string>
     <string name="at_kundli_place_of_birth">Place of Birth</string>
     <string name="at_chat_order_history">Chat Order History</string>
+    <string name="at_app_name">Astrotalk</string>
+    <string name="at_tag_line">Astrology on the go</string>
 
 </resources>

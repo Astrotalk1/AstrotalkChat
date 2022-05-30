@@ -24,6 +24,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -112,6 +113,7 @@ public class AstroChatAstrologerListActivity extends AppCompatActivity implement
     private TextView toolbarTV, tvOrderHistory;
     Handler handler = new Handler();
     Runnable runnable;
+    private ProgressBar progressBar;
 
 
     @Override
@@ -137,17 +139,6 @@ public class AstroChatAstrologerListActivity extends AppCompatActivity implement
             AstroConstants.LIVE_MODE = getIntent().getBooleanExtra("production", false);
         }
 
-        byte[] data = new byte[0];
-        try {
-            String text = client_id + ":" + client_secret;
-            data = text.getBytes("UTF-8");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        auth_token = Base64.encodeToString(data, Base64.DEFAULT);
-
-        verifyToken();
-
         tvOrderHistory.setOnClickListener(v -> {
             Intent intent = new Intent(context, AstroOrderHistoryActivity.class);
             startActivity(intent);
@@ -159,7 +150,23 @@ public class AstroChatAstrologerListActivity extends AppCompatActivity implement
             loading = true;
             totalPageNumber = 1;
             getAstrologerList();
+            checkUserWaitList();
         });
+
+        getAstrologerList();
+
+        Drawable drawable = getResources().getDrawable(R.drawable.at_recycler_div_black);
+        AstroDividerItemDecoration dividerItemDecoration = new AstroDividerItemDecoration(context, drawable, 0);
+        waitlistRecycler.addItemDecoration(dividerItemDecoration);
+        waitlistAdapter = new AstroWaitlistAdapter(this, waitlistModelArrayList, this, isCollpase, "fromChat");
+        waitlistRecycler.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+        waitlistRecycler.setAdapter(waitlistAdapter);
+
+        getChatOrder(true);
+        handler.postDelayed(runnable = () -> {
+            checkUserWaitList();
+            handler.postDelayed(runnable, 30000);
+        }, 5000);
 
     }
 
@@ -174,6 +181,8 @@ public class AstroChatAstrologerListActivity extends AppCompatActivity implement
     @Override
     protected void onResume() {
         super.onResume();
+
+        checkUserWaitList();
     }
 
     public void initViews() {
@@ -184,7 +193,10 @@ public class AstroChatAstrologerListActivity extends AppCompatActivity implement
         toolbarTV = (TextView) findViewById(R.id.toolbarTV);
         toolbarTV.setText(getResources().getString(R.string.at_chat_with_astrologer_heading));
 
+        progressBar = findViewById(R.id.progressBar);
         sharedPreferences = getSharedPreferences(AstroConstants.USER_DETAIL, MODE_PRIVATE);
+        user_id = sharedPreferences.getLong(AstroConstants.USER_ID, -1);
+        jwt_token = sharedPreferences.getString(AstroConstants.JWT_TOKEN, "");
         requestQueue = Volley.newRequestQueue(context);
         apiEndPointInterface = AstroApiEndPointInterface.retrofit.create(AstroApiEndPointInterface.class);
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
@@ -227,65 +239,65 @@ public class AstroChatAstrologerListActivity extends AppCompatActivity implement
         });
     }
 
-    private void verifyToken() {
-        String url = "";
-        try {
-            url = AstroConstants.VERIFY_TOKEN +
-                    "?authToken=" + token;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        AstroUtilities.showLoader(context);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> {
-            try {
-                JSONObject object = new JSONObject(response);
-                if (object.getString("status").equalsIgnoreCase("success")) {
-                    JSONObject dataObject = new JSONObject(object.getString("data"));
-                    user_id = dataObject.getLong("id");
-                    jwt_token = "Bearer " + dataObject.getString("authToken");
-                    String timeZone = dataObject.getString("timeZone");
-                    String winzoDuration = dataObject.getString("winzoDuration");
-
-                    sharedPreferences.edit().putLong(AstroConstants.USER_ID, user_id).apply();
-                    sharedPreferences.edit().putString(AstroConstants.JWT_TOKEN, jwt_token).apply();
-                    sharedPreferences.edit().putString(AstroConstants.WINZO_DURATION, winzoDuration).apply();
-
-                    getAstrologerList();
-
-                    Drawable drawable = getResources().getDrawable(R.drawable.at_recycler_div_black);
-                    AstroDividerItemDecoration dividerItemDecoration = new AstroDividerItemDecoration(context, drawable, 0);
-                    waitlistRecycler.addItemDecoration(dividerItemDecoration);
-                    waitlistAdapter = new AstroWaitlistAdapter(this, waitlistModelArrayList, this, isCollpase, "fromChat");
-                    waitlistRecycler.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-                    waitlistRecycler.setAdapter(waitlistAdapter);
-
-                    getChatOrder(true);
-                    handler.postDelayed(runnable = () -> {
-                        checkUserWaitList();
-                        handler.postDelayed(runnable, 1000);
-                    }, 500);
-
-                } else {
-                    AstroUtilities.showToast(context, object.getString("reason"));
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                AstroUtilities.closeLoader();
-            }
-        }, error -> AstroUtilities.closeLoader()) {
-            @Override
-            public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("Authorization", auth_token);
-                return headers;
-            }
-        };
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(6000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        requestQueue.add(stringRequest);
-    }
+//    private void verifyToken() {
+//        String url = "";
+//        try {
+//            url = AstroConstants.VERIFY_TOKEN +
+//                    "?authToken=" + token;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        AstroUtilities.showLoader(context);
+//        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> {
+//            try {
+//                JSONObject object = new JSONObject(response);
+//                if (object.getString("status").equalsIgnoreCase("success")) {
+//                    JSONObject dataObject = new JSONObject(object.getString("data"));
+//                    user_id = dataObject.getLong("id");
+//                    jwt_token = "Bearer " + dataObject.getString("authToken");
+//                    String timeZone = dataObject.getString("timeZone");
+//                    String winzoDuration = dataObject.getString("winzoDuration");
+//
+//                    sharedPreferences.edit().putLong(AstroConstants.USER_ID, user_id).apply();
+//                    sharedPreferences.edit().putString(AstroConstants.JWT_TOKEN, jwt_token).apply();
+//                    sharedPreferences.edit().putString(AstroConstants.WINZO_DURATION, winzoDuration).apply();
+//
+//                    getAstrologerList();
+//
+//                    Drawable drawable = getResources().getDrawable(R.drawable.at_recycler_div_black);
+//                    AstroDividerItemDecoration dividerItemDecoration = new AstroDividerItemDecoration(context, drawable, 0);
+//                    waitlistRecycler.addItemDecoration(dividerItemDecoration);
+//                    waitlistAdapter = new AstroWaitlistAdapter(this, waitlistModelArrayList, this, isCollpase, "fromChat");
+//                    waitlistRecycler.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+//                    waitlistRecycler.setAdapter(waitlistAdapter);
+//
+//                    getChatOrder(true);
+//                    handler.postDelayed(runnable = () -> {
+//                        checkUserWaitList();
+//                        handler.postDelayed(runnable, 1000);
+//                    }, 500);
+//
+//                } else {
+//                    AstroUtilities.showToast(context, object.getString("reason"));
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                AstroUtilities.closeLoader();
+//            }
+//        }, error -> AstroUtilities.closeLoader()) {
+//            @Override
+//            public Map<String, String> getHeaders() {
+//                HashMap<String, String> headers = new HashMap<>();
+//                headers.put("Authorization", auth_token);
+//                return headers;
+//            }
+//        };
+//        stringRequest.setRetryPolicy(new DefaultRetryPolicy(6000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//        requestQueue.add(stringRequest);
+//    }
 
     public void getAstrologerList() {
-
+        progressBar.setVisibility(VISIBLE);
         responseBodyCall = apiEndPointInterface.getAstrologerListSorting(
                 AstroConstants.APP_ID, AstroConstants.BUSINESS_ID, AstroConstants.CONSULTANT_TYPE_ID, AstroConstants.TIME_ZONE, user_id,
                 0, 1000, AstroConstants.SDK_VERSION, AstroConstants.CHAT_SERVICE_ID, AstroConstants.LANGUAGE_ID,
@@ -294,7 +306,7 @@ public class AstroChatAstrologerListActivity extends AppCompatActivity implement
         responseBodyCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull retrofit2.Response<ResponseBody> response) {
-                AstroUtilities.closeLoader();
+                progressBar.setVisibility(GONE);
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         try {
@@ -639,7 +651,7 @@ public class AstroChatAstrologerListActivity extends AppCompatActivity implement
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                AstroUtilities.closeLoader();
+                progressBar.setVisibility(GONE);
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -1385,7 +1397,6 @@ public class AstroChatAstrologerListActivity extends AppCompatActivity implement
                 }
             }
         }, error -> {
-            AstroUtilities.closeLoader();
         }) {
             @Override
             public Map getHeaders() {
@@ -1466,7 +1477,7 @@ public class AstroChatAstrologerListActivity extends AppCompatActivity implement
                             @Override
                             public Map getHeaders() {
                                 HashMap headers = new HashMap();
-                                headers.put("Authorization", auth_token);
+                                headers.put("Authorization", jwt_token);
                                 headers.put("id", user_id + "");
                                 return headers;
                             }

@@ -145,11 +145,6 @@ public class AstroAcceptChatInterfaceActivity extends AppCompatActivity {
             Log.e("Exception", e.getMessage());
         }
 
-//        chatOrderId = getIntent().getLongExtra("chatorder_id", -1);
-//        astrologerId = getIntent().getLongExtra("astrologer_id", -1);
-//        astrologerName = getIntent().getStringExtra("astrologer_name");
-//        pic = getIntent().getStringExtra("pic");
-
         if (pic != null && !pic.isEmpty()) {
             Glide.with(context)
                     .load(pic)
