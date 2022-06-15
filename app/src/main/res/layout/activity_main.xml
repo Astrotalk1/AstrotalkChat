@@ -64,6 +64,14 @@
                 android:text="User 5"
                 android:layout_centerInParent="true"/>
 
+            <Button
+                android:id="@+id/user6"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:text="tarun"
+                android:layout_centerInParent="true"/>
+
         </LinearLayout>
 
         <LinearLayout
