@@ -1454,7 +1454,7 @@ public class AstroUserAstrologerChatWindowActivity extends AppCompatActivity imp
                 photoFile = createImageFile();
                 String a = getPackageName();
                 if (photoFile != null) {
-                    Uri photoURI = FileProvider.getUriForFile(context, getPackageName() + ".provider", photoFile);
+                    Uri photoURI = FileProvider.getUriForFile(context, getPackageName() + ".astrotalk.file.provider", photoFile);
                     pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                     startActivityForResult(pictureIntent, 1);
                 }
