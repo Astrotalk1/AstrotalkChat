@@ -51,7 +51,7 @@
             android:theme="@style/AtNoActionBar" />
 
         <provider
-            android:name="androidx.core.content.FileProvider"
+            android:name="com.astrotalk.sdk.api.utils.MyFileProvider"
             android:authorities="${applicationId}.astrotalk.file.provider"
             android:exported="false"
             android:grantUriPermissions="true">
