@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         user6.setOnClickListener {
             val intent = Intent(context, AstroSplashActivity::class.java)
             intent.putExtra("type", "sdk_launch")
-            intent.putExtra("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJXaW56b0dhbWVQYXJ0ZXJzQXV0aENsYWltIjoie1wiYWNjZXNzVG9rZW5cIjpudWxsLFwidXNlcklkXCI6XCI5NDY0QkEzNS1GMkQ5LTREQzEtQkFCQS1GM0ExQTU2NTM0RURcIixcInJlZGlyZWN0VVJMXCI6bnVsbCxcInNlc3Npb25JZFwiOm51bGwsXCJnYW1lUGFydG5lcklkXCI6XCJcIn0iLCJuYmYiOjE2NTQyNjIwOTIsImV4cCI6MTc0MDY2MjA5MiwiaWF0IjoxNjU0MjYyMDkyLCJpc3MiOiJ3aW56by5jb20iLCJhdWQiOiJ3aW56byBnYW1lIHBhcnRuZXJzIn0.8ZBOagt37Dhs6UKuGbSdYzkb3cVQvDhwpHY_0SPQLwQ")
+            intent.putExtra("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJXaW56b0dhbWVQYXJ0ZXJzQXV0aENsYWltIjoie1wiYWNjZXNzVG9rZW5cIjpudWxsLFwidXNlcklkXCI6XCJGNjA0OUU2RC04RUU2LTRDQTktODFBNy1CODI1MzY2QTJGODJcIixcInJlZGlyZWN0VVJMXCI6bnVsbCxcInNlc3Npb25JZFwiOm51bGwsXCJnYW1lUGFydG5lcklkXCI6XCJcIn0iLCJuYmYiOjE2NTU5Nzk2MjUsImV4cCI6MTc0MjM3OTYyNSwiaWF0IjoxNjU1OTc5NjI1LCJpc3MiOiJ3aW56by5jb20iLCJhdWQiOiJ3aW56byBnYW1lIHBhcnRuZXJzIn0.jIMW6IYRzak3YjS4I69sTUpGOg5sH7s-rpqKioPlBfc")
             intent.putExtra("client_id", "winzo")
             intent.putExtra("client_secret", "F6bCtBdjeQzP3ZZF")
             intent.putExtra("production", false)

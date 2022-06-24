@@ -119,10 +119,10 @@ public class AstroSplashActivity extends AppCompatActivity {
                     if(type.equals("sdk_launch")) {
                         Intent intent = new Intent(context, AstroChatAstrologerListActivity.class);
                         intent.putExtra("type", type);
-                        intent.putExtra("client_id", "winzo_client_id");
-                        intent.putExtra("client_secret", "winzo_client_secret");
-                        intent.putExtra("token", "winzo_token");
-                        intent.putExtra("production",  "production_mode");
+                        intent.putExtra("client_id", client_id);
+                        intent.putExtra("client_secret", client_secret);
+                        intent.putExtra("token", token);
+                        intent.putExtra("production",  AstroConstants.LIVE_MODE);
                         startActivity(intent);
                         finish();
                     }
@@ -135,7 +135,7 @@ public class AstroSplashActivity extends AppCompatActivity {
                                 chatOrderId = jsonObject.getLong("chatorder_id");
                                 astrologerId = jsonObject.getLong("astrologer_id");
                                 astrologerName = jsonObject.getString("astrologer_name");
-                                pic = getIntent().getStringExtra("pic");
+                                pic = jsonObject.getString("pic");
 
                                 getStatus();
                             }
@@ -185,9 +185,20 @@ public class AstroSplashActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 finish();
                             }
+                            else {
+                                Intent intent = new Intent(context, AstroChatAstrologerListActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra("type", type);
+                                intent.putExtra("client_id", client_id);
+                                intent.putExtra("client_secret", client_secret);
+                                intent.putExtra("token", token);
+                                intent.putExtra("production",  AstroConstants.LIVE_MODE);
+                                startActivity(intent);
+                                finish();
+                            }
                         }
 
-                    } catch (JSONException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }, error -> { Log.e("Exception", error.getMessage()); }) {
@@ -195,7 +206,7 @@ public class AstroSplashActivity extends AppCompatActivity {
             public Map getHeaders() {
                 HashMap headers = new HashMap();
                 headers.put("Authorization", jwt_token);
-                headers.put("id", user_id);
+                headers.put("id", user_id + "");
                 return headers;
             }
         };
@@ -203,4 +214,7 @@ public class AstroSplashActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
+    private void sdkLaunch() {
+
+    }
 }
