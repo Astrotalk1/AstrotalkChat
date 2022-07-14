@@ -52,6 +52,7 @@ import com.astrotalk.sdk.api.model.WaitlistModel;
 import com.astrotalk.sdk.api.network.AstroApiEndPointInterface;
 import com.astrotalk.sdk.api.utils.AstroConstants;
 import com.astrotalk.sdk.api.utils.AstroDividerItemDecoration;
+import com.astrotalk.sdk.api.utils.AstroMode;
 import com.astrotalk.sdk.api.utils.AstroUtilities;
 import com.astrotalk.sdk.api.utils.AstroWaitlistClick;
 import com.bumptech.glide.Glide;
@@ -136,7 +137,10 @@ public class AstroChatAstrologerListActivity extends AppCompatActivity implement
         }
 
         if (getIntent().hasExtra("production")) {
-            AstroConstants.LIVE_MODE = getIntent().getBooleanExtra("production", false);
+            AstroMode.LIVE_MODE = getIntent().getBooleanExtra("production", false);
+            AstroConstants.domainMain();
+            AstroConstants.domainKundli();
+            AstroConstants.domainPaidChat();
         }
 
         tvOrderHistory.setOnClickListener(v -> {

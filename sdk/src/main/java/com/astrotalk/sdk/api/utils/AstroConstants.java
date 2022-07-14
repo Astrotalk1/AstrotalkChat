@@ -3,7 +3,7 @@ package com.astrotalk.sdk.api.utils;
 
 public class AstroConstants {
 
-    public static boolean LIVE_MODE = false;
+    public static boolean LIVE_MODE = AstroMode.LIVE_MODE;
 
     public static String DOMAIN = domainMain();
     public static String DOMAIN_KUNDLI = domainKundli();

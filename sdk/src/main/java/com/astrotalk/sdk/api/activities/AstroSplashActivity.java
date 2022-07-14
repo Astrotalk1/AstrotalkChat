@@ -25,6 +25,7 @@ import com.astrotalk.sdk.R;
 import com.astrotalk.sdk.api.adapter.AstroWaitlistAdapter;
 import com.astrotalk.sdk.api.utils.AstroConstants;
 import com.astrotalk.sdk.api.utils.AstroDividerItemDecoration;
+import com.astrotalk.sdk.api.utils.AstroMode;
 import com.astrotalk.sdk.api.utils.AstroUtilities;
 
 import org.json.JSONException;
@@ -68,7 +69,10 @@ public class AstroSplashActivity extends AppCompatActivity {
         }
 
         if (getIntent().hasExtra("production")) {
-            AstroConstants.LIVE_MODE = getIntent().getBooleanExtra("production", false);
+            AstroMode.LIVE_MODE = getIntent().getBooleanExtra("production", false);
+            AstroConstants.domainMain();
+            AstroConstants.domainKundli();
+            AstroConstants.domainPaidChat();
         }
 
         if (getIntent().hasExtra("data")) {
@@ -122,7 +126,7 @@ public class AstroSplashActivity extends AppCompatActivity {
                         intent.putExtra("client_id", client_id);
                         intent.putExtra("client_secret", client_secret);
                         intent.putExtra("token", token);
-                        intent.putExtra("production",  AstroConstants.LIVE_MODE);
+                        intent.putExtra("production",  AstroMode.LIVE_MODE);
                         startActivity(intent);
                         finish();
                     }
@@ -192,7 +196,7 @@ public class AstroSplashActivity extends AppCompatActivity {
                                 intent.putExtra("client_id", client_id);
                                 intent.putExtra("client_secret", client_secret);
                                 intent.putExtra("token", token);
-                                intent.putExtra("production",  AstroConstants.LIVE_MODE);
+                                intent.putExtra("production",  AstroMode.LIVE_MODE);
                                 startActivity(intent);
                                 finish();
                             }
