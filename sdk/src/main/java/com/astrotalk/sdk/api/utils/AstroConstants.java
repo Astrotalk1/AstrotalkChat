@@ -20,7 +20,7 @@ public class AstroConstants {
 
     public static String domainKundli() {
         if(LIVE_MODE) {
-            return "http://api.kundali.astrotalk.com/v1/";
+            return "https://api.kundali.astrotalk.com/v1/";
         }
         else {
             return "http://api.dev3.astrotalk.com/v1/";
