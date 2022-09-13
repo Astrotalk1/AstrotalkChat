@@ -1,5 +1,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -17,6 +18,7 @@
             android:layout_height="wrap_content"
             android:background="@color/at_white"
             android:backgroundTint="@color/at_color_primary"
+            app:contentInsetStartWithNavigation="0dp"
             app:theme="@style/AtToolbarStyle">
 
             <RelativeLayout
@@ -28,9 +30,73 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:padding="10dp"
+                    android:paddingVertical="10dp"
+                    android:paddingEnd="10dp"
                     android:textColor="@color/at_black"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    tools:ignore="RtlSymmetry" />
+
+                <androidx.cardview.widget.CardView
+                    android:visibility="gone"
+                    android:id="@+id/image"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    app:cardCornerRadius="20dp"
+                    android:elevation="8dp"
+                    android:layout_margin="5dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:visibility="visible"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:civ_border_width="1dp"
+                        app:civ_border_color="@color/at_white"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/at_image"
+                        android:src="@drawable/app_logo" />
+
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/tvAstrotalk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/image"
+                    android:padding="5dp"
+                    android:text="Astrotalk"
+                    android:textColor="@color/at_black"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:id="@+id/tvOrderHistory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignWithParentIfMissing="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/less_rouned_share_button"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="6dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="6dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:gravity="center"
+                        android:text="@string/at_order_history"
+                        android:textColor="@color/at_black"
+                        android:textSize="12dp"
+                        android:visibility="visible" />
+
+                </LinearLayout>
 
             </RelativeLayout>
 

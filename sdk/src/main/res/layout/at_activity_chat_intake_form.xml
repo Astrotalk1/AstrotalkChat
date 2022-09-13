@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:paddingStart="8dp"
-                android:text="@string/at_first_name_address"
+                android:text="@string/name"
                 android:textColor="@color/at_black_light"
                 android:textSize="16sp"
                 tools:ignore="RtlSymmetry" />
@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                android:hint="@string/at_first_enter_name_hint"
+                android:hint="@string/enter_name"
                 android:inputType="textCapWords"
                 android:paddingStart="8dp"
                 android:singleLine="true"
@@ -54,6 +54,7 @@
                 tools:ignore="RtlSymmetry" />
 
             <TextView
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -63,6 +64,7 @@
                 android:textSize="16sp" />
 
             <EditText
+                android:visibility="gone"
                 android:id="@+id/lastnameET"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -351,31 +353,31 @@
             </LinearLayout>
 
             <TextView
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:paddingStart="8dp"
                 android:text="@string/at_marital_status_intake"
                 android:textColor="@color/at_black_light"
-                android:textSize="16sp"
-                android:visibility="visible" />
+                android:textSize="16sp" />
 
             <Spinner
+                android:visibility="gone"
                 android:id="@+id/marital_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:theme="@style/AtCustomEditText"
-                android:visibility="visible">
+                android:theme="@style/AtCustomEditText">
 
             </Spinner>
 
             <TextView
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="2dp"
-                android:background="@color/at_color_primary"
-                android:visibility="visible" />
+                android:background="@color/at_color_primary" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -385,7 +387,7 @@
                 android:text="@string/at_occupation_intake"
                 android:textColor="@color/at_black_light"
                 android:textSize="16sp"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <EditText
                 android:id="@+id/occupationET"
@@ -400,24 +402,24 @@
                 android:textColorHint="@color/at_grey3"
                 android:textSize="14dp"
                 android:theme="@style/AtCustomEditText"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <TextView
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:paddingStart="8dp"
                 android:text="@string/at_topic_of_concern_intake"
                 android:textColor="@color/at_black_light"
-                android:textSize="16sp"
-                android:visibility="visible" />
+                android:textSize="16sp" />
 
             <Spinner
+                android:visibility="gone"
                 android:id="@+id/proble_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:visibility="visible">
+                android:layout_marginTop="16dp">
 
             </Spinner>
 
@@ -426,7 +428,7 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="2dp"
                 android:background="@color/at_color_primary"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <EditText
                 android:id="@+id/otherET"

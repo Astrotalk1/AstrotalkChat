@@ -19,7 +19,7 @@
             android:layout_height="180dp"
             android:layout_width="180dp"
             android:id="@+id/consultantIV"
-            android:src="@drawable/at_ic_app_logo"
+            android:src="@drawable/app_logo"
             android:contentDescription="@string/at_image"
             android:scaleType="centerCrop"/>
 
@@ -120,7 +120,7 @@
                 android:layout_height="50dp"
                 android:contentDescription="@string/at_image"
                 android:padding="2dp"
-                android:src="@drawable/at_ic_app_logo" />
+                android:src="@drawable/app_logo" />
 
             <TextView
                 android:layout_width="wrap_content"

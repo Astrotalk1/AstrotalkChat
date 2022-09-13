@@ -386,7 +386,7 @@
 
                 <TextView
                     android:id="@+id/label"
-                    android:layout_width="50dp"
+                    android:layout_width="60dp"
                     android:layout_height="10dp"
                     android:rotation="-45"
                     android:gravity="center"

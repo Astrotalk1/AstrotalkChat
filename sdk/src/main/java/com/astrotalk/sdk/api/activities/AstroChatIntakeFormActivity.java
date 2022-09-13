@@ -517,74 +517,74 @@ public class AstroChatIntakeFormActivity extends AppCompatActivity implements Vi
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
 
-        if (parent.getId() == R.id.marital_spinner) {
-            if (position == 0) {
-                maritalStatus = "";
-            } else {
-                if (language_id == 1 || language_id == 2) {
-                    maritalStatus = parent.getItemAtPosition(position).toString();
-                } else {
-                    if (position == 1) {
-                        maritalStatus = "Single";
-                    } else if (position == 2) {
-                        maritalStatus = "Married";
-                    } else if (position == 3) {
-                        maritalStatus = "Divorced";
-                    } else if (position == 4) {
-                        maritalStatus = "Separated";
-                    } else if (position == 5) {
-                        maritalStatus = "Widowed";
-                    }
-                }
-            }
-        }
+//        if (parent.getId() == R.id.marital_spinner) {
+//            if (position == 0) {
+//                maritalStatus = "";
+//            } else {
+//                if (language_id == 1 || language_id == 2) {
+//                    maritalStatus = parent.getItemAtPosition(position).toString();
+//                } else {
+//                    if (position == 1) {
+//                        maritalStatus = "Single";
+//                    } else if (position == 2) {
+//                        maritalStatus = "Married";
+//                    } else if (position == 3) {
+//                        maritalStatus = "Divorced";
+//                    } else if (position == 4) {
+//                        maritalStatus = "Separated";
+//                    } else if (position == 5) {
+//                        maritalStatus = "Widowed";
+//                    }
+//                }
+//            }
+//        }
 
-        if (parent.getId() == R.id.proble_spinner) {
-            if (language_id == 1 || language_id == 2) {
-                selectedItem = parent.getItemAtPosition(position).toString();
-            } else {
-                if (position == 1) {
-                    selectedItem = "Career and Business";
-                } else if (position == 2) {
-                    selectedItem = "Marriage";
-                } else if (position == 3) {
-                    selectedItem = "Love and Relationship";
-                } else if (position == 4) {
-                    selectedItem = "Wealth and Property";
-                } else if (position == 5) {
-                    selectedItem = "Education";
-                } else if (position == 6) {
-                    selectedItem = "Legal Matters";
-                } else if (position == 7) {
-                    selectedItem = "Child Name Consultation";
-                } else if (position == 8) {
-                    selectedItem = "Business Name Consultation";
-                } else if (position == 9) {
-                    selectedItem = "Gem Stone Consultation";
-                } else if (position == 10) {
-                    selectedItem = "Commodity trading consultation";
-                } else if (position == 11) {
-                    selectedItem = "Match making";
-                } else if (position == 12) {
-                    selectedItem = "Birth Time Rectification";
-                } else if (position == 13) {
-                    selectedItem = "Name Correction Consultation";
-                } else if (position == 14) {
-                    selectedItem = "Travel Abroad Consultation";
-                } else if (position == 15) {
-                    selectedItem = "Remedy Consultation";
-                } else if (position == 16) {
-                    selectedItem = "Health Consultation";
-                }
-            }
-
-            selectedPosition = position;
-            if (selectedPosition == 17) {
-                otherET.setVisibility(View.VISIBLE);
-            } else {
-                otherET.setVisibility(View.GONE);
-            }
-        }
+//        if (parent.getId() == R.id.proble_spinner) {
+//            if (language_id == 1 || language_id == 2) {
+//                selectedItem = parent.getItemAtPosition(position).toString();
+//            } else {
+//                if (position == 1) {
+//                    selectedItem = "Career and Business";
+//                } else if (position == 2) {
+//                    selectedItem = "Marriage";
+//                } else if (position == 3) {
+//                    selectedItem = "Love and Relationship";
+//                } else if (position == 4) {
+//                    selectedItem = "Wealth and Property";
+//                } else if (position == 5) {
+//                    selectedItem = "Education";
+//                } else if (position == 6) {
+//                    selectedItem = "Legal Matters";
+//                } else if (position == 7) {
+//                    selectedItem = "Child Name Consultation";
+//                } else if (position == 8) {
+//                    selectedItem = "Business Name Consultation";
+//                } else if (position == 9) {
+//                    selectedItem = "Gem Stone Consultation";
+//                } else if (position == 10) {
+//                    selectedItem = "Commodity trading consultation";
+//                } else if (position == 11) {
+//                    selectedItem = "Match making";
+//                } else if (position == 12) {
+//                    selectedItem = "Birth Time Rectification";
+//                } else if (position == 13) {
+//                    selectedItem = "Name Correction Consultation";
+//                } else if (position == 14) {
+//                    selectedItem = "Travel Abroad Consultation";
+//                } else if (position == 15) {
+//                    selectedItem = "Remedy Consultation";
+//                } else if (position == 16) {
+//                    selectedItem = "Health Consultation";
+//                }
+//            }
+//
+//            selectedPosition = position;
+//            if (selectedPosition == 17) {
+//                otherET.setVisibility(View.VISIBLE);
+//            } else {
+//                otherET.setVisibility(View.GONE);
+//            }
+//        }
     }
 
     @Override
@@ -682,7 +682,7 @@ public class AstroChatIntakeFormActivity extends AppCompatActivity implements Vi
 
                 params.put("userId", user_id + "");
                 params.put("name", nameET.getText().toString());
-                params.put("lastName", lastnameET.getText().toString());
+                params.put("lastName", "");
                 params.put("mobile", "");
                 params.put("countrycode", countryCode);
                 params.put("email", "");
@@ -777,7 +777,7 @@ public class AstroChatIntakeFormActivity extends AppCompatActivity implements Vi
                 }
                 params.put("problemarea", selectedItem);
                 params.put("maritialStatus", maritalStatus);
-                params.put("occupation", occupationET.getText().toString().trim());
+                params.put("occupation", "");
                 params.put("chatVersion", "v2");
                 params.put("appVersionUser", AstroConstants.SDK_VERSION);
                 params.put("appId", AstroConstants.APP_ID + "");
@@ -1024,72 +1024,72 @@ public class AstroChatIntakeFormActivity extends AppCompatActivity implements Vi
                         if (jsonObject1.has("comment") && !jsonObject1.isNull("comment")) {
                             questionET.setText(jsonObject1.getString("comment"));
                         }
-                        if (jsonObject1.has("occupation") && !jsonObject1.isNull("occupation")) {
-                            occupationET.setText(jsonObject1.getString("occupation"));
-                        }
+//                        if (jsonObject1.has("occupation") && !jsonObject1.isNull("occupation")) {
+//                            occupationET.setText(jsonObject1.getString("occupation"));
+//                        }
 
                         if (jsonObject1.has("maritialStatus") && !jsonObject1.isNull("maritialStatus")) {
                             maritalStatus = jsonObject1.getString("maritialStatus");
                         }
 
-                        if (maritalStatus.equalsIgnoreCase("")) {
-                            marital_spinner.setSelection(0);
-                        } else if (maritalStatus.equalsIgnoreCase(getResources().getString(R.string.at_single_drop_down))) {
-                            marital_spinner.setSelection(1);
-                        } else if (maritalStatus.equalsIgnoreCase(getResources().getString(R.string.at_married_drop_down))) {
-                            marital_spinner.setSelection(2);
-                        } else if (maritalStatus.equalsIgnoreCase(getResources().getString(R.string.at_divorced_drop_down))) {
-                            marital_spinner.setSelection(3);
-                        } else if (maritalStatus.equalsIgnoreCase(getResources().getString(R.string.at_separated_drop_down))) {
-                            marital_spinner.setSelection(4);
-                        } else if (maritalStatus.equalsIgnoreCase(getResources().getString(R.string.at_widowed_drop_down))) {
-                            marital_spinner.setSelection(5);
-                        }
+//                        if (maritalStatus.equalsIgnoreCase("")) {
+//                            marital_spinner.setSelection(0);
+//                        } else if (maritalStatus.equalsIgnoreCase(getResources().getString(R.string.at_single_drop_down))) {
+//                            marital_spinner.setSelection(1);
+//                        } else if (maritalStatus.equalsIgnoreCase(getResources().getString(R.string.at_married_drop_down))) {
+//                            marital_spinner.setSelection(2);
+//                        } else if (maritalStatus.equalsIgnoreCase(getResources().getString(R.string.at_divorced_drop_down))) {
+//                            marital_spinner.setSelection(3);
+//                        } else if (maritalStatus.equalsIgnoreCase(getResources().getString(R.string.at_separated_drop_down))) {
+//                            marital_spinner.setSelection(4);
+//                        } else if (maritalStatus.equalsIgnoreCase(getResources().getString(R.string.at_widowed_drop_down))) {
+//                            marital_spinner.setSelection(5);
+//                        }
 
                         if (jsonObject1.has("problemarea") && !jsonObject1.isNull("problemarea")) {
                             selectedItem = jsonObject1.getString("problemarea");
                         }
 
-                        if (selectedItem.equalsIgnoreCase("")) {
-                            spinner.setSelection(0);
-                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_career_and_business_drop_down))) {
-                            spinner.setSelection(1);
-                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_marriage_drop_down))) {
-                            spinner.setSelection(2);
-                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_love_and_relationship_drop_down))) {
-                            spinner.setSelection(3);
-                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_wealth_and_property_drop_down))) {
-                            spinner.setSelection(4);
-                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_education_drop_down))) {
-                            spinner.setSelection(5);
-                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_legal_matters_drop_down))) {
-                            spinner.setSelection(6);
-                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_child_name_consultation_drop_down))) {
-                            spinner.setSelection(7);
-                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_business_name_consultation_drop_down))) {
-                            spinner.setSelection(8);
-                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_gem_stone_consultation_drop_down))) {
-                            spinner.setSelection(9);
-                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_commodity_trading_consultation_drop_down))) {
-                            spinner.setSelection(10);
-                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_match_making_drop_down))) {
-                            spinner.setSelection(11);
-                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_birth_time_rectification_drop_down))) {
-                            spinner.setSelection(12);
-                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_name_correction_consultation_drop_down))) {
-                            spinner.setSelection(13);
-                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_travel_abroad_consultation_drop_down))) {
-                            spinner.setSelection(14);
-                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_remedy_consultation_drop_down))) {
-                            spinner.setSelection(15);
-                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_health_consultation_drop_down))) {
-                            spinner.setSelection(16);
-                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_others_drop_down))) {
-                            spinner.setSelection(17);
-                        } else {
-                            otherET.setText(selectedItem);
-                            spinner.setSelection(17);
-                        }
+//                        if (selectedItem.equalsIgnoreCase("")) {
+//                            spinner.setSelection(0);
+//                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_career_and_business_drop_down))) {
+//                            spinner.setSelection(1);
+//                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_marriage_drop_down))) {
+//                            spinner.setSelection(2);
+//                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_love_and_relationship_drop_down))) {
+//                            spinner.setSelection(3);
+//                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_wealth_and_property_drop_down))) {
+//                            spinner.setSelection(4);
+//                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_education_drop_down))) {
+//                            spinner.setSelection(5);
+//                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_legal_matters_drop_down))) {
+//                            spinner.setSelection(6);
+//                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_child_name_consultation_drop_down))) {
+//                            spinner.setSelection(7);
+//                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_business_name_consultation_drop_down))) {
+//                            spinner.setSelection(8);
+//                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_gem_stone_consultation_drop_down))) {
+//                            spinner.setSelection(9);
+//                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_commodity_trading_consultation_drop_down))) {
+//                            spinner.setSelection(10);
+//                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_match_making_drop_down))) {
+//                            spinner.setSelection(11);
+//                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_birth_time_rectification_drop_down))) {
+//                            spinner.setSelection(12);
+//                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_name_correction_consultation_drop_down))) {
+//                            spinner.setSelection(13);
+//                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_travel_abroad_consultation_drop_down))) {
+//                            spinner.setSelection(14);
+//                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_remedy_consultation_drop_down))) {
+//                            spinner.setSelection(15);
+//                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_health_consultation_drop_down))) {
+//                            spinner.setSelection(16);
+//                        } else if (selectedItem.equalsIgnoreCase(getResources().getString(R.string.at_others_drop_down))) {
+//                            spinner.setSelection(17);
+//                        } else {
+//                            otherET.setText(selectedItem);
+//                            spinner.setSelection(17);
+//                        }
 
                         double lat = 0;
                         double log = 0;
@@ -1179,7 +1179,7 @@ public class AstroChatIntakeFormActivity extends AppCompatActivity implements Vi
 
                 params.put("userId", user_id + "");
                 params.put("name", nameET.getText().toString());
-                params.put("lastName", lastnameET.getText().toString());
+                params.put("lastName", "");
                 params.put("mobile", phoneET.getText().toString());
                 params.put("countrycode", countryCode);
                 params.put("email", "");
@@ -1272,7 +1272,7 @@ public class AstroChatIntakeFormActivity extends AppCompatActivity implements Vi
                 }
                 params.put("problemarea", selectedItem);
                 params.put("maritialStatus", maritalStatus);
-                params.put("occupation", occupationET.getText().toString().trim());
+                params.put("occupation", "");
                 params.put("chatVersion", "v2");
                 params.put("appVersionUser", AstroConstants.SDK_VERSION);
                 params.put("appId", AstroConstants.APP_ID + "");

@@ -11,7 +11,7 @@ public class AstroConstants {
 
     public static String domainMain() {
         if(LIVE_MODE) {
-            return "https://api.prod.astrotalk.in/AstroTalk/";
+            return "http://3.6.11.39:8080/AstroTalk/";
         }
         else {
             return "http://api.dev3.astrotalk.com:8080/AstroTalk/";

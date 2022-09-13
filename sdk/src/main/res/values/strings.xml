@@ -172,10 +172,12 @@
     <string name="at_sure_about_deleting_order">Are you sure you want to permanently delete this order?</string>
     <string name="at_deduction_order_history">Deduction:&#160;</string>
     <string name="at_available_in_txt">wait time ~ /@TIME</string>
-    <string name="at_order_history">Order History</string>
+    <string name="at_order_history">History</string>
     <string name="at_kundli_place_of_birth">Place of Birth</string>
     <string name="at_chat_order_history">Chat Order History</string>
     <string name="at_app_name">Astrotalk</string>
     <string name="at_tag_line">Astrology on the go</string>
+    <string name="name">Name*</string>
+    <string name="enter_name">Enter name</string>
 
 </resources>

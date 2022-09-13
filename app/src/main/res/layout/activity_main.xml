@@ -8,7 +8,7 @@
         android:id="@+id/btnClick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Dev Mode"
+        android:text="Pre Prod Mode"
         android:layout_centerInParent="true"/>
 
     <LinearLayout
@@ -48,30 +48,6 @@
                 android:text="User 3"
                 android:layout_centerInParent="true"/>
 
-            <Button
-                android:id="@+id/user4"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:text="User 4"
-                android:layout_centerInParent="true"/>
-
-            <Button
-                android:id="@+id/user5"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:text="User 5"
-                android:layout_centerInParent="true"/>
-
-            <Button
-                android:id="@+id/user6"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:text="tarun"
-                android:layout_centerInParent="true"/>
-
         </LinearLayout>
 
         <LinearLayout
@@ -92,7 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
-                android:text="Loveleen"
+                android:text="Vandana"
                 android:gravity="center"
                 android:layout_marginStart="10dp"/>
 
@@ -109,6 +85,7 @@
     </LinearLayout>
 
     <Button
+        android:visibility="gone"
         android:id="@+id/btnClickLive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

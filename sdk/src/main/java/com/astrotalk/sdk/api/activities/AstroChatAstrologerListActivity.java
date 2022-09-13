@@ -32,6 +32,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -111,7 +112,8 @@ public class AstroChatAstrologerListActivity extends AppCompatActivity implement
     private long user_id = -1;
     private String jwt_token = "";
     private Toolbar toolbar;
-    private TextView toolbarTV, tvOrderHistory;
+    private TextView toolbarTV;
+    private LinearLayout tvOrderHistory;
     Handler handler = new Handler();
     Runnable runnable;
     private ProgressBar progressBar;
@@ -196,6 +198,11 @@ public class AstroChatAstrologerListActivity extends AppCompatActivity implement
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbarTV = (TextView) findViewById(R.id.toolbarTV);
         toolbarTV.setText(getResources().getString(R.string.at_chat_with_astrologer_heading));
+        CardView image = findViewById(R.id.image);
+        TextView tvAstrotalk = findViewById(R.id.tvAstrotalk);
+        image.setVisibility(VISIBLE);
+        tvAstrotalk.setVisibility(VISIBLE);
+        toolbarTV.setVisibility(GONE);
 
         progressBar = findViewById(R.id.progressBar);
         sharedPreferences = getSharedPreferences(AstroConstants.USER_DETAIL, MODE_PRIVATE);
