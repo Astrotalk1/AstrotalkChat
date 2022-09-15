@@ -48,7 +48,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import io.reactivex.disposables.CompositeDisposable;
 
 public class AstroSearchLocationActivity extends AppCompatActivity implements AstroNewSearchPlaceAdapter.LocationItemClick {
 
@@ -62,7 +61,6 @@ public class AstroSearchLocationActivity extends AppCompatActivity implements As
     private AstroWrapContentLinearLayoutManager linearLayoutManager;
     private AstroNewSearchPlaceAdapter locationAdapter;
     private ImageView imv_cancel;
-    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private SharedPreferences sharedPreferences;
     private TextView searchsecound;
     private RequestQueue requestQueue;

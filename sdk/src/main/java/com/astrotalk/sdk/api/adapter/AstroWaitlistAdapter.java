@@ -51,7 +51,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.reactivex.disposables.CompositeDisposable;
 
 public class AstroWaitlistAdapter extends RecyclerView.Adapter<AstroWaitlistAdapter.ViewHolder> {
 
@@ -61,7 +60,6 @@ public class AstroWaitlistAdapter extends RecyclerView.Adapter<AstroWaitlistAdap
     AstroWaitlistClick waitlistClick;
     boolean isCollpase = false;
     String userTimeZone;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private String from = "";
     private RequestQueue requestQueue;
     private SharedPreferences sharedPreferences;

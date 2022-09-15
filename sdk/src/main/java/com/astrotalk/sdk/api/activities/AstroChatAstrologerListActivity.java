@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -28,7 +27,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -50,7 +48,6 @@ import com.astrotalk.sdk.api.adapter.AstroWaitlistAdapter;
 import com.astrotalk.sdk.api.model.ChatCompleteModel;
 import com.astrotalk.sdk.api.model.UniversalAstrologerListModel;
 import com.astrotalk.sdk.api.model.WaitlistModel;
-import com.astrotalk.sdk.api.network.AstroApiEndPointInterface;
 import com.astrotalk.sdk.api.utils.AstroConstants;
 import com.astrotalk.sdk.api.utils.AstroDividerItemDecoration;
 import com.astrotalk.sdk.api.utils.AstroMode;
@@ -73,9 +70,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
 
 
 public class AstroChatAstrologerListActivity extends AppCompatActivity implements AstroChatAstrologerListAdapter.OnChatButtonListener, AstroWaitlistClick {
@@ -83,11 +77,9 @@ public class AstroChatAstrologerListActivity extends AppCompatActivity implement
     private final Context context = this;
     private RecyclerView recyclerView;
     private RequestQueue requestQueue;
-    private AstroApiEndPointInterface apiEndPointInterface;
 
     private long fixedSessionId = -1;
     private ArrayList<UniversalAstrologerListModel> astrologerListModelArrayList = new ArrayList<>();
-    private Call<ResponseBody> responseBodyCall;
     private int totalPageNumber = 1;
     private int pageNumber = 0;
     private boolean loading = true;
@@ -209,7 +201,6 @@ public class AstroChatAstrologerListActivity extends AppCompatActivity implement
         user_id = sharedPreferences.getLong(AstroConstants.USER_ID, -1);
         jwt_token = sharedPreferences.getString(AstroConstants.JWT_TOKEN, "");
         requestQueue = Volley.newRequestQueue(context);
-        apiEndPointInterface = AstroApiEndPointInterface.retrofit.create(AstroApiEndPointInterface.class);
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -226,7 +217,6 @@ public class AstroChatAstrologerListActivity extends AppCompatActivity implement
         collapseActionView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // todo loveleen (no issue)
 //                if (sharedPreferences.getBoolean(AstroConstants.WAITLIST_SHOW_HIDE, false) == true) {
 //                    sharedPreferences.edit().putBoolean(AstroConstants.WAITLIST_SHOW_HIDE, false).apply();
 //                    collapseActionView.setImageResource(R.drawable.arrow_down_navigation_new);
@@ -309,363 +299,390 @@ public class AstroChatAstrologerListActivity extends AppCompatActivity implement
 
     public void getAstrologerList() {
         progressBar.setVisibility(VISIBLE);
-        responseBodyCall = apiEndPointInterface.getAstrologerListSorting(
-                AstroConstants.APP_ID, AstroConstants.BUSINESS_ID, AstroConstants.CONSULTANT_TYPE_ID, AstroConstants.TIME_ZONE, user_id,
-                0, 1000, AstroConstants.SDK_VERSION, AstroConstants.CHAT_SERVICE_ID, AstroConstants.LANGUAGE_ID,
-                false, false, false, false);
+        String url = AstroConstants.ASTROLOGER_LIST +
+                "?appId=" + AstroConstants.APP_ID +
+                "&businessId=" + AstroConstants.BUSINESS_ID +
+                "&consultantTypeId=" + AstroConstants.CONSULTANT_TYPE_ID +
+                "&timezone=" + AstroConstants.TIME_ZONE +
+                "&userId=" + user_id +
+                "&pageNo=" + 0 +
+                "&pageSize=" + 1000 +
+                "&version=" + AstroConstants.SDK_VERSION +
+                "&serviceId=" + AstroConstants.CHAT_SERVICE_ID +
+                "&languageId=" + AstroConstants.LANGUAGE_ID +
+                "&sortByExperience=" + false +
+                "&sortByPrice=" + false +
+                "&sortByRating=" + false +
+                "&sortByOrder=" + false;
 
-        responseBodyCall.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull retrofit2.Response<ResponseBody> response) {
-                progressBar.setVisibility(GONE);
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        try {
-                            String status;
-                            int fo = 0;
-                            JSONObject jsonObject = new JSONObject(response.body().string());
-                            totalPageNumber = jsonObject.getInt("totalPages");
-                            if (totalPageNumber > pageNumber) {
-                                loading = true;
-                                pageNumber++;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                response -> {
+                    try {
+                        swipeRefreshLayout.setRefreshing(false);
+                        progressBar.setVisibility(GONE);
+
+                        String status;
+                        int fo = 0;
+                        JSONObject jsonObject = new JSONObject(response);
+                        totalPageNumber = jsonObject.getInt("totalPages");
+                        if (totalPageNumber > pageNumber) {
+                            loading = true;
+                            pageNumber++;
+                        } else {
+                            loading = false;
+                        }
+                        JSONArray dataArray = jsonObject.getJSONArray("content");
+                        ArrayList<UniversalAstrologerListModel> childChatArray = new ArrayList<>();
+                        for (int i = 0; i < dataArray.length(); i++) {
+                            UniversalAstrologerListModel userChatListModel = new UniversalAstrologerListModel();
+                            JSONObject jsonObject1 = dataArray.getJSONObject(i);
+                            userChatListModel.setId(jsonObject1.getLong("id"));
+                            if (jsonObject1.has("name") && !jsonObject1.isNull("name")) {
+                                userChatListModel.setFirstname(jsonObject1.getString("name"));
                             } else {
-                                loading = false;
-                            }
-                            JSONArray dataArray = jsonObject.getJSONArray("content");
-                            ArrayList<UniversalAstrologerListModel> childChatArray = new ArrayList<>();
-                            for (int i = 0; i < dataArray.length(); i++) {
-                                UniversalAstrologerListModel userChatListModel = new UniversalAstrologerListModel();
-                                JSONObject jsonObject1 = dataArray.getJSONObject(i);
-                                userChatListModel.setId(jsonObject1.getLong("id"));
-                                if (jsonObject1.has("name") && !jsonObject1.isNull("name")) {
-                                    userChatListModel.setFirstname(jsonObject1.getString("name"));
-                                } else {
-                                    userChatListModel.setFirstname("");
-                                }
-
-                                if (jsonObject1.has("exp") && !jsonObject1.isNull("exp")) {
-                                    userChatListModel.setExperience(jsonObject1.getString("exp"));
-                                } else {
-                                    userChatListModel.setExperience("0 year");
-                                }
-
-                                if (jsonObject1.has("isPo") && !jsonObject1.isNull("isPo")) {
-                                    userChatListModel.setPo(jsonObject1.getBoolean("isPo"));
-                                } else {
-                                    userChatListModel.setPo(false);
-                                }
-
-                                if (jsonObject1.has("isPoSo") && !jsonObject1.isNull("isPoSo")) {
-                                    userChatListModel.setPoSo(jsonObject1.getBoolean("isPoSo"));
-                                } else {
-                                    userChatListModel.setPoSo(false);
-                                }
-
-                                userChatListModel.setOffer(isOffer);
-
-                                if (jsonObject1.has("fo") && !jsonObject1.isNull("fo")) {
-                                    fo = jsonObject1.getInt("fo");
-                                } else {
-                                    fo = 0;
-                                }
-
-                                if (jsonObject1.has("isBoostOn") && !jsonObject1.isNull("isBoostOn")) {
-                                    userChatListModel.setBoostOn(jsonObject1.getBoolean("isBoostOn"));
-                                } else {
-                                    userChatListModel.setBoostOn(false);
-                                }
-
-                                if (fo > 0) {
-                                    userChatListModel.setHasOffer(true);
-                                    userChatListModel.setCashbackOfferValue(fo);
-                                } else {
-                                    userChatListModel.setHasOffer(false);
-                                    userChatListModel.setCashbackOfferValue(0);
-                                }
-
-                                if (jsonObject1.has("skill") && !jsonObject1.isNull("skill")) {
-                                    userChatListModel.setSkill(jsonObject1.getString("skill"));
-                                } else {
-                                    userChatListModel.setSkill("No skill");
-                                }
-
-                                if (jsonObject1.has("isFavourite") && !jsonObject1.isNull("isFavourite")) {
-                                    userChatListModel.setFavourite(jsonObject1.getBoolean("isFavourite"));
-                                } else {
-                                    userChatListModel.setFavourite(false);
-                                }
-                                if (jsonObject1.has("offerDisplayName") && !jsonObject1.isNull("offerDisplayName")) {
-                                    userChatListModel.setOfferDisplayName(jsonObject1.getString("offerDisplayName"));
-                                } else {
-                                    userChatListModel.setOfferDisplayName("");
-                                }
-
-                                if (jsonObject1.has("label") && !jsonObject1.isNull("label")) {
-                                    userChatListModel.setLabel(jsonObject1.getString("label"));
-                                } else {
-                                    userChatListModel.setLabel("");
-                                }
-
-                                if (jsonObject1.has("languages") && !jsonObject1.isNull("languages")) {
-                                    List<String> list = new ArrayList<>();
-                                    JSONArray languageArray = jsonObject1.getJSONArray("languages");
-                                    for (int j = 0; j < languageArray.length(); j++) {
-                                        JSONObject languageObject = languageArray.getJSONObject(j);
-                                        list.add(languageObject.getString("language"));
-                                    }
-                                    userChatListModel.setLanguage(TextUtils.join(", ", list));
-                                } else {
-                                    userChatListModel.setLanguage("");
-                                }
-
-                                if (jsonObject1.has("picId") && !jsonObject1.isNull("picId")) {
-                                    userChatListModel.setProfilePic(jsonObject1.getString("picId"));
-                                } else {
-                                    userChatListModel.setProfilePic("");
-                                }
-
-                                if (jsonObject1.has("price") && !jsonObject1.isNull("price")) {
-                                    userChatListModel.setPrice(jsonObject1.getInt("price"));
-                                } else {
-                                    userChatListModel.setPrice(1100);
-                                }
-
-                                if (jsonObject1.has("sessionPrice") && !jsonObject1.isNull("sessionPrice")) {
-                                    userChatListModel.setSessionPrice(jsonObject1.getInt("sessionPrice"));
-                                } else {
-                                    userChatListModel.setSessionPrice(1100);
-                                }
-
-                                if (jsonObject1.has("notify") && !jsonObject1.isNull("notify")) {
-                                    userChatListModel.setNotify(jsonObject1.getBoolean("notify"));
-                                } else {
-                                    userChatListModel.setNotify(false);
-                                }
-                                if (jsonObject1.has("rating") && !jsonObject1.isNull("rating")) {
-                                    userChatListModel.setAvgRating(jsonObject1.getDouble("rating"));
-                                } else {
-                                    userChatListModel.setAvgRating(5);
-                                }
-
-                                if (jsonObject1.has("order") && !jsonObject1.isNull("order")) {
-                                    userChatListModel.setNoOfRating(jsonObject1.getInt("order"));
-                                    userChatListModel.setNew(jsonObject1.getInt("order") == 0);
-
-                                } else {
-                                    userChatListModel.setNoOfRating(0);
-                                    userChatListModel.setNew(true);
-                                }
-
-                                /* MAIN STATUS */
-                                if (jsonObject1.has("status") && !jsonObject1.isNull("status")) {
-                                    status = jsonObject1.getString("status");
-                                } else {
-                                    status = "2";
-                                }
-                                if (status.equalsIgnoreCase("1")) {
-                                    userChatListModel.setStatus("BUSY");
-
-                                } else if (status.equalsIgnoreCase("2")) {
-                                    userChatListModel.setStatus("CHAT");
-                                } else if (status.equalsIgnoreCase("3")) {
-                                    userChatListModel.setStatus("OFFLINE");
-                                } else if (status.equalsIgnoreCase("4")) {
-                                    userChatListModel.setWaitListJoined(true);
-                                    userChatListModel.setStatus("BUSY");
-
-                                } else if (status.equalsIgnoreCase("5")) {
-                                    userChatListModel.setStatus("ASK");
-                                } else if (status.equalsIgnoreCase("6")) {
-                                    userChatListModel.setStatus("INPROGRESS");
-                                } else if (status.equalsIgnoreCase("7")) {
-                                    userChatListModel.setStatus("NOTAVILABLE");
-                                } else {
-                                    userChatListModel.setStatus("CHAT");
-                                }
-
-                                /* STATUS CALL */
-                                String callStatus;
-                                if (jsonObject1.has("statusCall") && !jsonObject1.isNull("statusCall")) {
-                                    callStatus = jsonObject1.getString("statusCall");
-                                } else {
-                                    callStatus = "2";
-                                }
-                                userChatListModel.setStatusCallNew(callStatus);
-
-                                if (callStatus.equalsIgnoreCase("1")) {
-                                    userChatListModel.setStatusCall("BUSY");
-                                } else if (callStatus.equalsIgnoreCase("2")) {
-                                    userChatListModel.setStatusCall("CALL");
-                                } else if (callStatus.equalsIgnoreCase("3")) {
-                                    userChatListModel.setStatusCall("OFFLINE");
-                                } else if (callStatus.equalsIgnoreCase("4")) {
-                                    userChatListModel.setWaitListJoinedCall(true);
-                                    userChatListModel.setStatusCall("BUSY");
-                                } else {
-                                    userChatListModel.setStatusCall("CALL");
-                                }
-
-                                if (jsonObject1.has("visibleForVideoLocal") && !jsonObject1.isNull("visibleForVideoLocal")) {
-                                    userChatListModel.setVisibleForVideoLocal(jsonObject1.getBoolean("visibleForVideoLocal"));
-                                } else {
-                                    userChatListModel.setVisibleForVideoLocal(false);
-                                }
-
-                                if (jsonObject1.has("nextCall") && !jsonObject1.isNull("nextCall")) {
-                                    userChatListModel.setNextCall(jsonObject1.getString("nextCall"));
-                                } else {
-                                    userChatListModel.setNextCall("");
-                                }
-
-                                /* STATUS VIDEO CALL */
-                                String videoCall;
-                                if (jsonObject1.has("statusVideoCall") && !jsonObject1.isNull("statusVideoCall")) {
-                                    videoCall = jsonObject1.getString("statusVideoCall");
-                                } else {
-                                    videoCall = "2";
-                                }
-
-                                if (videoCall.equalsIgnoreCase("1")) {
-                                    userChatListModel.setStatusVideoCall("BUSY");
-                                } else if (videoCall.equalsIgnoreCase("2")) {
-                                    userChatListModel.setStatusVideoCall("CALL");
-                                } else if (videoCall.equalsIgnoreCase("3")) {
-                                    userChatListModel.setStatusVideoCall("OFFLINE");
-                                } else if (videoCall.equalsIgnoreCase("4")) {
-                                    userChatListModel.setWaitListJoinedVideoCall(true);
-                                    userChatListModel.setStatusVideoCall("BUSY");
-                                } else {
-                                    userChatListModel.setStatusVideoCall("CALL");
-                                }
-
-                                if (jsonObject1.has("visibleForVideoCallLocal") && !jsonObject1.isNull("visibleForVideoCallLocal")) {
-                                    userChatListModel.setVisibleForVideoCallLocal(jsonObject1.getBoolean("visibleForVideoCallLocal"));
-                                } else {
-                                    userChatListModel.setVisibleForVideoCallLocal(false);
-                                }
-
-                                if (jsonObject1.has("nextVideoCall") && !jsonObject1.isNull("nextVideoCall")) {
-                                    userChatListModel.setNextVideoCall(jsonObject1.getString("nextVideoCall"));
-                                } else {
-                                    userChatListModel.setNextVideoCall("");
-                                }
-                                userChatListModel.setStatusVideoCallNew(videoCall);
-
-                                /* STATUS CHAT */
-                                String statusChat;
-                                if (jsonObject1.has("statusChat") && !jsonObject1.isNull("statusChat")) {
-                                    statusChat = jsonObject1.getString("statusChat");
-                                } else {
-                                    statusChat = "2";
-                                }
-                                userChatListModel.setStatusChatNew(statusChat);
-                                if (statusChat.equalsIgnoreCase("1")) {
-                                    userChatListModel.setStatusChat("BUSY");
-
-                                } else if (statusChat.equalsIgnoreCase("2")) {
-                                    userChatListModel.setStatusChat("CHAT");
-                                } else if (statusChat.equalsIgnoreCase("3")) {
-                                    userChatListModel.setStatusChat("OFFLINE");
-                                } else if (statusChat.equalsIgnoreCase("4")) {
-                                    userChatListModel.setWaitListJoinedChat(true);
-                                    userChatListModel.setStatusChat("BUSY");
-
-                                } else if (statusChat.equalsIgnoreCase("5")) {
-                                    userChatListModel.setStatusChat("ASK");
-                                } else if (statusChat.equalsIgnoreCase("6")) {
-                                    userChatListModel.setStatusChat("INPROGRESS");
-                                } else if (statusChat.equalsIgnoreCase("7")) {
-                                    userChatListModel.setStatusChat("NOTAVILABLE");
-                                } else {
-                                    userChatListModel.setStatusChat("CHAT");
-                                }
-
-                                if (jsonObject1.has("nextChat") && !jsonObject1.isNull("nextChat")) {
-                                    userChatListModel.setNextChat(jsonObject1.getString("nextChat"));
-                                } else {
-                                    userChatListModel.setNextChat("");
-                                }
-
-                                if (jsonObject1.has("visibleForChatLocal") && !jsonObject1.isNull("visibleForChatLocal")) {
-                                    userChatListModel.setVisibleForChatLocal(jsonObject1.getBoolean("visibleForChatLocal"));
-                                } else {
-                                    userChatListModel.setVisibleForChatLocal(false);
-                                }
-
-                                if (jsonObject1.has("tick") && !jsonObject1.isNull("tick")) {
-                                    userChatListModel.setVerified(jsonObject1.getBoolean("tick"));
-                                } else {
-                                    userChatListModel.setVerified(false);
-                                }
-
-                                if (jsonObject1.has("wt") && !jsonObject1.isNull("wt")) {
-                                    userChatListModel.setWaitListWaitTime(jsonObject1.getInt("wt"));
-                                } else {
-                                    userChatListModel.setWaitListWaitTime(0);
-                                }
-
-                                if (jsonObject1.has("next") && !jsonObject1.isNull("next")) {
-                                    userChatListModel.setNextOnlineTimeChat(jsonObject1.getString("next"));
-                                } else {
-                                    userChatListModel.setNextOnlineTimeChat("");
-                                }
-
-                                if (jsonObject1.has("isFirstSession") && !jsonObject1.isNull("isFirstSession")) {
-                                    userChatListModel.setFirstSession(jsonObject1.getBoolean("isFirstSession"));
-                                } else {
-                                    userChatListModel.setFirstSession(false);
-                                }
-
-                                if (jsonObject1.has("tag") && !jsonObject1.isNull("tag")) {
-                                    userChatListModel.setTag(jsonObject1.getString("tag"));
-                                } else {
-                                    userChatListModel.setTag("");
-                                }
-
-                                if (jsonObject1.has("isIntroVideoActive") && !jsonObject1.isNull("isIntroVideoActive")) {
-                                    userChatListModel.setIntroVideoActive(jsonObject1.getBoolean("isIntroVideoActive"));
-                                } else {
-                                    userChatListModel.setIntroVideoActive(false);
-                                }
-                                if (jsonObject1.has("introVideo") && !jsonObject1.isNull("introVideo")) {
-                                    userChatListModel.setIntroVideo(jsonObject1.getString("introVideo"));
-                                } else {
-                                    userChatListModel.setIntroVideo("");
-                                }
-
-                                childChatArray.add(userChatListModel);
+                                userChatListModel.setFirstname("");
                             }
 
-                            if (swipeRefreshLayout.isRefreshing()) {
-                                astrologerListModelArrayList.clear();
-                                swipeRefreshLayout.setRefreshing(false);
+                            if (jsonObject1.has("exp") && !jsonObject1.isNull("exp")) {
+                                userChatListModel.setExperience(jsonObject1.getString("exp"));
+                            } else {
+                                userChatListModel.setExperience("0 year");
                             }
-                            // demoArrayList= name of arrayList from which u want to remove duplicates
-                            LinkedHashSet hs = new LinkedHashSet(childChatArray);
-                            // demoArrayList= name of arrayList from which u want to remove duplicates
-                            astrologerListModelArrayList.addAll(hs);
 
-                            chatAstrologerListAdapter.setConsultantType(1);
-                            chatAstrologerListAdapter.notifyDataSetChanged();
+                            if (jsonObject1.has("isPo") && !jsonObject1.isNull("isPo")) {
+                                userChatListModel.setPo(jsonObject1.getBoolean("isPo"));
+                            } else {
+                                userChatListModel.setPo(false);
+                            }
 
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                            if (jsonObject1.has("isPoSo") && !jsonObject1.isNull("isPoSo")) {
+                                userChatListModel.setPoSo(jsonObject1.getBoolean("isPoSo"));
+                            } else {
+                                userChatListModel.setPoSo(false);
+                            }
+
+                            userChatListModel.setOffer(isOffer);
+
+                            if (jsonObject1.has("fo") && !jsonObject1.isNull("fo")) {
+                                fo = jsonObject1.getInt("fo");
+                            } else {
+                                fo = 0;
+                            }
+
+                            if (jsonObject1.has("isBoostOn") && !jsonObject1.isNull("isBoostOn")) {
+                                userChatListModel.setBoostOn(jsonObject1.getBoolean("isBoostOn"));
+                            } else {
+                                userChatListModel.setBoostOn(false);
+                            }
+
+                            if (fo > 0) {
+                                userChatListModel.setHasOffer(true);
+                                userChatListModel.setCashbackOfferValue(fo);
+                            } else {
+                                userChatListModel.setHasOffer(false);
+                                userChatListModel.setCashbackOfferValue(0);
+                            }
+
+                            if (jsonObject1.has("skill") && !jsonObject1.isNull("skill")) {
+                                userChatListModel.setSkill(jsonObject1.getString("skill"));
+                            } else {
+                                userChatListModel.setSkill("No skill");
+                            }
+
+                            if (jsonObject1.has("isFavourite") && !jsonObject1.isNull("isFavourite")) {
+                                userChatListModel.setFavourite(jsonObject1.getBoolean("isFavourite"));
+                            } else {
+                                userChatListModel.setFavourite(false);
+                            }
+                            if (jsonObject1.has("offerDisplayName") && !jsonObject1.isNull("offerDisplayName")) {
+                                userChatListModel.setOfferDisplayName(jsonObject1.getString("offerDisplayName"));
+                            } else {
+                                userChatListModel.setOfferDisplayName("");
+                            }
+
+                            if (jsonObject1.has("label") && !jsonObject1.isNull("label")) {
+                                userChatListModel.setLabel(jsonObject1.getString("label"));
+                            } else {
+                                userChatListModel.setLabel("");
+                            }
+
+                            if (jsonObject1.has("languages") && !jsonObject1.isNull("languages")) {
+                                List<String> list = new ArrayList<>();
+                                JSONArray languageArray = jsonObject1.getJSONArray("languages");
+                                for (int j = 0; j < languageArray.length(); j++) {
+                                    JSONObject languageObject = languageArray.getJSONObject(j);
+                                    list.add(languageObject.getString("language"));
+                                }
+                                userChatListModel.setLanguage(TextUtils.join(", ", list));
+                            } else {
+                                userChatListModel.setLanguage("");
+                            }
+
+                            if (jsonObject1.has("picId") && !jsonObject1.isNull("picId")) {
+                                userChatListModel.setProfilePic(jsonObject1.getString("picId"));
+                            } else {
+                                userChatListModel.setProfilePic("");
+                            }
+
+                            if (jsonObject1.has("price") && !jsonObject1.isNull("price")) {
+                                userChatListModel.setPrice(jsonObject1.getInt("price"));
+                            } else {
+                                userChatListModel.setPrice(1100);
+                            }
+
+                            if (jsonObject1.has("sessionPrice") && !jsonObject1.isNull("sessionPrice")) {
+                                userChatListModel.setSessionPrice(jsonObject1.getInt("sessionPrice"));
+                            } else {
+                                userChatListModel.setSessionPrice(1100);
+                            }
+
+                            if (jsonObject1.has("notify") && !jsonObject1.isNull("notify")) {
+                                userChatListModel.setNotify(jsonObject1.getBoolean("notify"));
+                            } else {
+                                userChatListModel.setNotify(false);
+                            }
+                            if (jsonObject1.has("rating") && !jsonObject1.isNull("rating")) {
+                                userChatListModel.setAvgRating(jsonObject1.getDouble("rating"));
+                            } else {
+                                userChatListModel.setAvgRating(5);
+                            }
+
+                            if (jsonObject1.has("order") && !jsonObject1.isNull("order")) {
+                                userChatListModel.setNoOfRating(jsonObject1.getInt("order"));
+                                userChatListModel.setNew(jsonObject1.getInt("order") == 0);
+
+                            } else {
+                                userChatListModel.setNoOfRating(0);
+                                userChatListModel.setNew(true);
+                            }
+
+                            /* MAIN STATUS */
+                            if (jsonObject1.has("status") && !jsonObject1.isNull("status")) {
+                                status = jsonObject1.getString("status");
+                            } else {
+                                status = "2";
+                            }
+                            if (status.equalsIgnoreCase("1")) {
+                                userChatListModel.setStatus("BUSY");
+
+                            } else if (status.equalsIgnoreCase("2")) {
+                                userChatListModel.setStatus("CHAT");
+                            } else if (status.equalsIgnoreCase("3")) {
+                                userChatListModel.setStatus("OFFLINE");
+                            } else if (status.equalsIgnoreCase("4")) {
+                                userChatListModel.setWaitListJoined(true);
+                                userChatListModel.setStatus("BUSY");
+
+                            } else if (status.equalsIgnoreCase("5")) {
+                                userChatListModel.setStatus("ASK");
+                            } else if (status.equalsIgnoreCase("6")) {
+                                userChatListModel.setStatus("INPROGRESS");
+                            } else if (status.equalsIgnoreCase("7")) {
+                                userChatListModel.setStatus("NOTAVILABLE");
+                            } else {
+                                userChatListModel.setStatus("CHAT");
+                            }
+
+                            /* STATUS CALL */
+                            String callStatus;
+                            if (jsonObject1.has("statusCall") && !jsonObject1.isNull("statusCall")) {
+                                callStatus = jsonObject1.getString("statusCall");
+                            } else {
+                                callStatus = "2";
+                            }
+                            userChatListModel.setStatusCallNew(callStatus);
+
+                            if (callStatus.equalsIgnoreCase("1")) {
+                                userChatListModel.setStatusCall("BUSY");
+                            } else if (callStatus.equalsIgnoreCase("2")) {
+                                userChatListModel.setStatusCall("CALL");
+                            } else if (callStatus.equalsIgnoreCase("3")) {
+                                userChatListModel.setStatusCall("OFFLINE");
+                            } else if (callStatus.equalsIgnoreCase("4")) {
+                                userChatListModel.setWaitListJoinedCall(true);
+                                userChatListModel.setStatusCall("BUSY");
+                            } else {
+                                userChatListModel.setStatusCall("CALL");
+                            }
+
+                            if (jsonObject1.has("visibleForVideoLocal") && !jsonObject1.isNull("visibleForVideoLocal")) {
+                                userChatListModel.setVisibleForVideoLocal(jsonObject1.getBoolean("visibleForVideoLocal"));
+                            } else {
+                                userChatListModel.setVisibleForVideoLocal(false);
+                            }
+
+                            if (jsonObject1.has("nextCall") && !jsonObject1.isNull("nextCall")) {
+                                userChatListModel.setNextCall(jsonObject1.getString("nextCall"));
+                            } else {
+                                userChatListModel.setNextCall("");
+                            }
+
+                            /* STATUS VIDEO CALL */
+                            String videoCall;
+                            if (jsonObject1.has("statusVideoCall") && !jsonObject1.isNull("statusVideoCall")) {
+                                videoCall = jsonObject1.getString("statusVideoCall");
+                            } else {
+                                videoCall = "2";
+                            }
+
+                            if (videoCall.equalsIgnoreCase("1")) {
+                                userChatListModel.setStatusVideoCall("BUSY");
+                            } else if (videoCall.equalsIgnoreCase("2")) {
+                                userChatListModel.setStatusVideoCall("CALL");
+                            } else if (videoCall.equalsIgnoreCase("3")) {
+                                userChatListModel.setStatusVideoCall("OFFLINE");
+                            } else if (videoCall.equalsIgnoreCase("4")) {
+                                userChatListModel.setWaitListJoinedVideoCall(true);
+                                userChatListModel.setStatusVideoCall("BUSY");
+                            } else {
+                                userChatListModel.setStatusVideoCall("CALL");
+                            }
+
+                            if (jsonObject1.has("visibleForVideoCallLocal") && !jsonObject1.isNull("visibleForVideoCallLocal")) {
+                                userChatListModel.setVisibleForVideoCallLocal(jsonObject1.getBoolean("visibleForVideoCallLocal"));
+                            } else {
+                                userChatListModel.setVisibleForVideoCallLocal(false);
+                            }
+
+                            if (jsonObject1.has("nextVideoCall") && !jsonObject1.isNull("nextVideoCall")) {
+                                userChatListModel.setNextVideoCall(jsonObject1.getString("nextVideoCall"));
+                            } else {
+                                userChatListModel.setNextVideoCall("");
+                            }
+                            userChatListModel.setStatusVideoCallNew(videoCall);
+
+                            /* STATUS CHAT */
+                            String statusChat;
+                            if (jsonObject1.has("statusChat") && !jsonObject1.isNull("statusChat")) {
+                                statusChat = jsonObject1.getString("statusChat");
+                            } else {
+                                statusChat = "2";
+                            }
+                            userChatListModel.setStatusChatNew(statusChat);
+                            if (statusChat.equalsIgnoreCase("1")) {
+                                userChatListModel.setStatusChat("BUSY");
+
+                            } else if (statusChat.equalsIgnoreCase("2")) {
+                                userChatListModel.setStatusChat("CHAT");
+                            } else if (statusChat.equalsIgnoreCase("3")) {
+                                userChatListModel.setStatusChat("OFFLINE");
+                            } else if (statusChat.equalsIgnoreCase("4")) {
+                                userChatListModel.setWaitListJoinedChat(true);
+                                userChatListModel.setStatusChat("BUSY");
+
+                            } else if (statusChat.equalsIgnoreCase("5")) {
+                                userChatListModel.setStatusChat("ASK");
+                            } else if (statusChat.equalsIgnoreCase("6")) {
+                                userChatListModel.setStatusChat("INPROGRESS");
+                            } else if (statusChat.equalsIgnoreCase("7")) {
+                                userChatListModel.setStatusChat("NOTAVILABLE");
+                            } else {
+                                userChatListModel.setStatusChat("CHAT");
+                            }
+
+                            if (jsonObject1.has("nextChat") && !jsonObject1.isNull("nextChat")) {
+                                userChatListModel.setNextChat(jsonObject1.getString("nextChat"));
+                            } else {
+                                userChatListModel.setNextChat("");
+                            }
+
+                            if (jsonObject1.has("visibleForChatLocal") && !jsonObject1.isNull("visibleForChatLocal")) {
+                                userChatListModel.setVisibleForChatLocal(jsonObject1.getBoolean("visibleForChatLocal"));
+                            } else {
+                                userChatListModel.setVisibleForChatLocal(false);
+                            }
+
+                            if (jsonObject1.has("tick") && !jsonObject1.isNull("tick")) {
+                                userChatListModel.setVerified(jsonObject1.getBoolean("tick"));
+                            } else {
+                                userChatListModel.setVerified(false);
+                            }
+
+                            if (jsonObject1.has("wt") && !jsonObject1.isNull("wt")) {
+                                userChatListModel.setWaitListWaitTime(jsonObject1.getInt("wt"));
+                            } else {
+                                userChatListModel.setWaitListWaitTime(0);
+                            }
+
+                            if (jsonObject1.has("next") && !jsonObject1.isNull("next")) {
+                                userChatListModel.setNextOnlineTimeChat(jsonObject1.getString("next"));
+                            } else {
+                                userChatListModel.setNextOnlineTimeChat("");
+                            }
+
+                            if (jsonObject1.has("isFirstSession") && !jsonObject1.isNull("isFirstSession")) {
+                                userChatListModel.setFirstSession(jsonObject1.getBoolean("isFirstSession"));
+                            } else {
+                                userChatListModel.setFirstSession(false);
+                            }
+
+                            if (jsonObject1.has("tag") && !jsonObject1.isNull("tag")) {
+                                userChatListModel.setTag(jsonObject1.getString("tag"));
+                            } else {
+                                userChatListModel.setTag("");
+                            }
+
+                            if (jsonObject1.has("isIntroVideoActive") && !jsonObject1.isNull("isIntroVideoActive")) {
+                                userChatListModel.setIntroVideoActive(jsonObject1.getBoolean("isIntroVideoActive"));
+                            } else {
+                                userChatListModel.setIntroVideoActive(false);
+                            }
+                            if (jsonObject1.has("introVideo") && !jsonObject1.isNull("introVideo")) {
+                                userChatListModel.setIntroVideo(jsonObject1.getString("introVideo"));
+                            } else {
+                                userChatListModel.setIntroVideo("");
+                            }
+
+                            childChatArray.add(userChatListModel);
+                        }
+
+                        if (swipeRefreshLayout.isRefreshing()) {
+                            astrologerListModelArrayList.clear();
                             swipeRefreshLayout.setRefreshing(false);
                         }
-                    } else {
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                } else {
-                    swipeRefreshLayout.setRefreshing(false);
-                }
-            }
+                        // demoArrayList= name of arrayList from which u want to remove duplicates
+                        LinkedHashSet hs = new LinkedHashSet(childChatArray);
+                        // demoArrayList= name of arrayList from which u want to remove duplicates
+                        astrologerListModelArrayList.addAll(hs);
 
-            @Override
-            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                progressBar.setVisibility(GONE);
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
+                        chatAstrologerListAdapter.setConsultantType(1);
+                        chatAstrologerListAdapter.notifyDataSetChanged();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }, error -> { Log.e("Exception", error.getMessage()); }) {
+        };
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(6000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(stringRequest);
+
+//
+//        responseBodyCall = apiEndPointInterface.getAstrologerListSorting(
+//                AstroConstants.APP_ID, AstroConstants.BUSINESS_ID, AstroConstants.CONSULTANT_TYPE_ID, AstroConstants.TIME_ZONE, user_id,
+//                0, 1000, AstroConstants.SDK_VERSION, AstroConstants.CHAT_SERVICE_ID, AstroConstants.LANGUAGE_ID,
+//                false, false, false, false);
+//
+//        responseBodyCall.enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull retrofit2.Response<ResponseBody> response) {
+//                progressBar.setVisibility(GONE);
+//                if (response.isSuccessful()) {
+//                    if (response.body() != null) {
+//
+//                    } else {
+//                        swipeRefreshLayout.setRefreshing(false);
+//                    }
+//                } else {
+//                    swipeRefreshLayout.setRefreshing(false);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+//                progressBar.setVisibility(GONE);
+//                swipeRefreshLayout.setRefreshing(false);
+//            }
+//        });
     }
 
     @Override

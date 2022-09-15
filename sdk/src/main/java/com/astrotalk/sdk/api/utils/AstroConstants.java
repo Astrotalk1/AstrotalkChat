@@ -62,6 +62,7 @@ public class AstroConstants {
     */
 
     // Chat List
+    public static final String ASTROLOGER_LIST = DOMAIN + "freeAPI/consultant/get-list/filter";
     public static final String GET_LAST_CHAT_ID_STATUS = DOMAIN_USER_CHAT + "chat/order/get/user/chat-status";
     public static final String GET_NEXT_ONLINE_TIME = DOMAIN + "consultant/get/total/wait/time";
     public static final String CHECK_CAN_CHAT_CAN_CALL_V2 = DOMAIN + "get/status/for/call-chat/v3";

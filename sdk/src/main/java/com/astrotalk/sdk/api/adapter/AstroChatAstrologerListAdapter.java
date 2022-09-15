@@ -335,7 +335,6 @@ public class AstroChatAstrologerListAdapter extends RecyclerView.Adapter<AstroCh
         });
 
         holder.main.setOnClickListener(view -> {
-            // todo loveleen (no issues)
 //            holder.main.setClickable(false);
 //            holder.main.setEnabled(false);
 

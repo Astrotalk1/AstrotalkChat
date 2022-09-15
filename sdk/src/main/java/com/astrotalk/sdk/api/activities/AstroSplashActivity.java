@@ -92,7 +92,11 @@ public class AstroSplashActivity extends AppCompatActivity {
         }
         auth_token = Base64.encodeToString(data_enc, Base64.DEFAULT);
 
-        verifyToken();
+        // todo loveleen
+//        verifyToken();
+        Intent intent = new Intent(context, AstroChatAstrologerListActivity.class);
+        startActivity(intent);
+        finish();
 
     }
 
