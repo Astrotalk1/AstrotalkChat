@@ -30,9 +30,6 @@
     <color name="at_sky_blue">#34b7f1</color>
     <color name="at_link">#0000ff</color>
     <color name="at_yellow_on">#8C8341</color>
-
-    <color name="light_yellow">#fffcd9</color>
-    <color name="quantum_pink">#e91e63</color>
-    <color name="orange">#F77500</color>
+    <color name="at_light_yellow">#fffcd9</color>
 
 </resources>

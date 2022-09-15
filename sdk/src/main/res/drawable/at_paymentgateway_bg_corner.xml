@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <stroke
-        android:width="0.5dp"
-        android:color="@color/at_grey4" />
-    <solid android:color="@color/at_payment_box_selectore"></solid>
-</shape>

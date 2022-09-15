@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
-    android:background="@color/light_yellow"
+    android:background="@color/at_light_yellow"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -17,7 +17,7 @@
             android:id="@+id/waitListLL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/light_yellow"
+            android:background="@color/at_light_yellow"
             android:paddingLeft="16dp"
             android:paddingTop="3dp"
             android:paddingRight="16dp"
@@ -239,7 +239,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/waitListLL"
-            android:background="@color/light_yellow"
+            android:background="@color/at_light_yellow"
             android:paddingLeft="16dp"
             android:paddingTop="1dp"
             android:paddingRight="16dp"

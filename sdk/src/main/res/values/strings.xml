@@ -33,7 +33,6 @@
     <string name="at_permission_necessary">Permission necessary</string>
     <string name="at_external_storage_permission">External storage permission is necessary</string>
     <string name="at_please_enter_some_message">please enter some message</string>
-    <string name="at_per_minute">/min</string>
     <string name="at_experience_adapter">Exp: @EXP Years</string>
     <string name="at_offline">Offline</string>
     <string name="at_online_in">Online in /@TIME</string>
@@ -42,9 +41,7 @@
     <string name="at_new_">NEW!</string>
     <string name="at_permission_granted">Permission granted</string>
     <string name="at_start_chat_with">Start chat with&#160;</string>
-    <string name="at_first_name_address">First Name*</string>
     <string name="at_last_name_address">Last Name</string>
-    <string name="at_first_enter_name_hint">Enter first name</string>
     <string name="at_last_enter_name_hint">Enter last name</string>
     <string name="at_phone_no_address">Phone No.*</string>
     <string name="at_enter_phone_number_hint">Enter phone number</string>
@@ -76,7 +73,6 @@
     <string name="at_enter_your_question_here_hint">Enter your question here</string>
     <string name="at_start_chat">Start chat</string>
     <string name="at_type_a_message">Type a message</string>
-    <string name="at_quick_recharge_text">Balance &#60; 5 minutes, \nQuick Recharge</string>
     <string name="at_chat_end_alert">Are you sure you want to end the chat order?</string>
     <string name="at_please_allow_permission">please allow permission</string>
     <string name="at_chat_status">Chat in-progress</string>
@@ -84,7 +80,6 @@
     <string name="at_ratings_list_adapter_total">&#160;total</string>
     <string name="at_your_review">Your review</string>
     <string name="at_your_review_edit">Edit your review</string>
-    <string name="at_play">Play</string>
     <string name="at_astrologer">Astrologer</string>
     <string name="at_profile_currently_offline">Currently Offline</string>
     <string name="at_you_ll_not_be_charged_for_the_first_minute">You\'ll not be charged for the first minute</string>
@@ -99,28 +94,18 @@
     <string name="at_your_call_might_start_around_time">""@TYPE Start Time - @TIME</string>
     <string name="at_cancel">Cancel</string>
     <string name="at_join_waitlist">Join Waitlist</string>
-    <string name="at_maxWaitlistSize"> You already have&#160;@MAXWAITLIST &#160;tokens in waiting. Kindly cancel one to join another wait-list</string>
     <string name="at_profile_waitlist_limit"> Waitlist Limit Reached!</string>
-    <string name="at_live_event_offer_txt">This offer at  %1$s  is for 5 mins only. Astrologer will try to answer at least one question</string>
-    <string name="at_min">/min</string>
     <string name="at_select_language_intake">Select Preferred language(s)*</string>
     <string name="at_please_enter_name">Please enter name</string>
     <string name="at_please_enter_country_code">Please enter country code</string>
-    <string name="at_please_enter_10_digits_phone_number">Please enter 10 digits phone number</string>
     <string name="at_please_select_gender">Please select gender</string>
     <string name="at_please_enter_date_of_birth">Please enter Date of Birth</string>
     <string name="at_please_enter_time_of_birth">Please enter Time of Birth</string>
     <string name="at_please_enter_your_place_of_birth">Please enter your Place of Birth</string>
     <string name="at_please_enter_a_valid_place_of_birth">Please enter a valid Place of Birth</string>
-    <string name="at_please_enter_a_preferred">Please select any  preferred language</string>
-    <string name="at_city_validation">Please enter City of Birth</string>
-    <string name="at_state_validation">Please enter State of Birth</string>
     <string name="at_please_select_dob_first">Please select date of birth first</string>
     <string name="at_please_select_partners_dob_first">Please select partner\'s date of birth first</string>
-    <string name="at_logout_message">Please login again for security reasons</string>
     <string name="at_recharge">Recharge</string>
-    <string name="at_not_received_chat_permission2">We need permission to send notifications. Kindly clear data and login again for a smooth chat experience.</string>
-    <string name="at_clear_data">Clear Data</string>
     <string name="at_matchmaking_select_city">Search City</string>
     <string name="at_unable_to_find_your_location">Unable to find your location?</string>
     <string name="at_matchmaking_search_here">Search Here</string>
@@ -148,16 +133,12 @@
     <string name="at_system_has_marked_this_token_on_hold_as_you_had_missed_this_session">System has marked this token on hold as you had missed this session.</string>
     <string name="at_unhold">Rejoin</string>
     <string name="at_chat_1">(Chat)</string>
-    <string name="at_call_1">(Call)</string>
     <string name="at_is_in_progress">&#160;is in progress.</string>
     <string name="at_waiting">waiting</string>
     <string name="at_accept_chat_btn">Accept Chat</string>
     <string name="at_leave_waitlist_heading">Leave Waitlist?</string>
     <string name="at_leave_waitlist_question">Are you sure you want to leave the waitlist for</string>
     <string name="at_mins_postfix">&#160;mins</string>
-    <string name="at_join">Join</string>
-    <string name="at_astrotv_endcall_before_live_join">You have to end this call before joining live event</string>
-    <string name="at_continue_capsOff">Continue</string>
     <string name="at_chat_btn">Chat</string>
     <string name="at_chat_intake_form_heading">Chat Intake Form</string>
     <string name="at_chat_with_astrologer_heading">Chat with Astrologer</string>
@@ -177,7 +158,6 @@
     <string name="at_chat_order_history">Chat Order History</string>
     <string name="at_app_name">Astrotalk</string>
     <string name="at_tag_line">Astrology on the go</string>
-    <string name="name">Name*</string>
-    <string name="enter_name">Enter name</string>
-
+    <string name="at_name">Name*</string>
+    <string name="at_enter_name">Enter name</string>
 </resources>

@@ -1,34 +1,26 @@
 package com.astrotalk.sdk.api.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.astrotalk.sdk.R;
-import com.astrotalk.sdk.api.adapter.AstroWaitlistAdapter;
 import com.astrotalk.sdk.api.utils.AstroConstants;
-import com.astrotalk.sdk.api.utils.AstroDividerItemDecoration;
 import com.astrotalk.sdk.api.utils.AstroMode;
 import com.astrotalk.sdk.api.utils.AstroUtilities;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -50,7 +42,7 @@ public class AstroSplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+        setContentView(R.layout.at_activity_splash);
 
         if (getIntent().hasExtra("type")) {
             type = getIntent().getStringExtra("type");

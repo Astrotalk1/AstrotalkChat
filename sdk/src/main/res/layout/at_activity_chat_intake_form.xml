@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:paddingStart="8dp"
-                android:text="@string/name"
+                android:text="@string/at_name"
                 android:textColor="@color/at_black_light"
                 android:textSize="16sp"
                 tools:ignore="RtlSymmetry" />
@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                android:hint="@string/enter_name"
+                android:hint="@string/at_enter_name"
                 android:inputType="textCapWords"
                 android:paddingStart="8dp"
                 android:singleLine="true"
